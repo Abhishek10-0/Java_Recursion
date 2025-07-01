@@ -38,3 +38,36 @@ public class Return_ArrayList {
         return result;
     }
 }
+
+
+//
+////Returning Arraylist passing it as an argument
+//static ArrayList<Integer> FindAllIndexes(int[] arr, int target, int index, ArrayList<Integer> list) {
+//    if (index == arr.length) {
+//        return list;
+//    }
+//    if (arr[index] == target) {
+//        list.add(index);
+//    }
+//    return FindAllIndexes(arr, target, index + 1, list);
+//}
+
+
+
+
+//////Returning Arraylist without passing an argument
+//static ArrayList<Integer> FindAllIndexes(int[] arr, int target, int index) {
+//    ArrayList<Integer> result = new ArrayList<>();
+//
+//    if (index == arr.length) {
+//        return result;
+//    }
+//
+//    if (arr[index] == target) {
+//        result.add(index);
+//    }
+//
+//    ArrayList<Integer> rest = FindAllIndexes(arr, target, index + 1);
+//    result.addAll(rest);  // combine results
+//    return result;
+//}
