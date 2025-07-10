@@ -1,52 +1,112 @@
 package BackTracking;
 
+import java.awt.desktop.SystemEventListener;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MazeAllPath {
     public static void main(String[] args) {
 
         boolean[][] maze = {
-                {true, true, true},
-                {true, false, true},
-                {true, true, true}
+                {true, true, true,true},
+                {true, true, true,true},
+                {true, true, true,true},
+                {true, true, true,true}
         };
 
-        boolean[][] visited = new boolean[maze.length][maze[0].length];
-        System.out.println(allPaths("", maze, 0, 0, visited));
+//        System.out.println(allPaths("", maze, 0, 0));
+
+        int[][] path = new int[maze.length][maze[0].length];
+        allPathsPrint("", maze, 0, 0, path, 1);
 
     }
 
-    static ArrayList<String> allPaths(String p, boolean[][] maze, int r, int c, boolean[][] visited) {
-        ArrayList<String> list = new ArrayList<>();
-
-        // Base condition: reached the end
+    static ArrayList<String> allPaths(String p, boolean[][] maze, int r,int c) {
         if (r == maze.length - 1 && c == maze[0].length - 1) {
+            ArrayList<String> list = new ArrayList<>();
             list.add(p);
             return list;
         }
 
-        // Check boundaries and cell accessibility
-        if (r < 0 || c < 0 || r >= maze.length || c >= maze[0].length || !maze[r][c] || visited[r][c]) {
+        ArrayList<String> list = new ArrayList<>();
+
+        if (!maze[r][c]) {
             return list;
         }
 
-        // Mark current cell as visited
-        visited[r][c] = true;
+//        if(r < maze.length-1 && c < maze[0].length-1){
+//            list.addAll(pathRestriction(p+"D",maze,r+1,c+1));
+//        }
 
-        // All 8 directions
-        list.addAll(allPaths(p + "D", maze, r + 1, c, visited));        // Down
-        list.addAll(allPaths(p + "U", maze, r - 1, c, visited));        // Up
-        list.addAll(allPaths(p + "R", maze, r, c + 1, visited));        // Right
-        list.addAll(allPaths(p + "L", maze, r, c - 1, visited));        // Left
-        list.addAll(allPaths(p + "d", maze, r + 1, c + 1, visited));    // Diagonal Down-Right
-        list.addAll(allPaths(p + "dl", maze, r + 1, c - 1, visited));   // Diagonal Down-Left
-        list.addAll(allPaths(p + "ur", maze, r - 1, c + 1, visited));   // Diagonal Up-Right
-        list.addAll(allPaths(p + "ul", maze, r - 1, c - 1, visited));   // Diagonal Up-Left
+        maze[r][c] = false;
 
-        // Unmark the cell after recursion (backtrack)
-        visited[r][c] = false;
+        if (r < maze.length - 1) {
+            list.addAll(allPaths(p + "D", maze, r + 1, c));
+        }
+        if (c < maze[0].length - 1) {
+            list.addAll(allPaths(p + "R", maze, r, c + 1));
+        }
+
+        if(r > 0){
+            list.addAll(allPaths(p + "U", maze, r - 1, c));
+        }
+        if(c > 0){
+            list.addAll(allPaths(p + "L", maze, r, c-1));
+        }
+
+        maze[r][c] = true;
 
         return list;
+
+
     }
+
+
+    static void allPathsPrint(String p, boolean[][] maze, int r,int c,int[][]path, int step) {
+        if (r == maze.length - 1 && c == maze[0].length - 1) {
+            path[r][c] = step;
+
+
+            for (int[] arr : path){
+                System.out.println(Arrays.toString(arr));
+            }
+
+            System.out.println(p);
+            System.out.println( );
+            return;
+        }
+
+
+        if (!maze[r][c]) {
+            return;
+        }
+
+//        if(r < maze.length-1 && c < maze[0].length-1){
+//            list.addAll(pathRestriction(p+"D",maze,r+1,c+1));
+//        }
+
+        maze[r][c] = false;
+        path[r][c] = step;
+
+        if (r < maze.length - 1) {
+            allPathsPrint(p + "D", maze, r + 1, c,path,step+1);
+        }
+        if (c < maze[0].length - 1) {
+            allPathsPrint(p + "R", maze, r, c + 1, path,step+1);
+        }
+
+        if(r > 0){
+            allPathsPrint(p + "U", maze, r - 1, c, path,step+1);
+        }
+        if(c > 0){
+            allPathsPrint(p + "L", maze, r, c-1, path,step+1);
+        }
+
+        maze[r][c] = true;
+        path[r][c] = 0;
+
+    }
+
 }
 
